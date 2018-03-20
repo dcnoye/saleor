@@ -24,6 +24,7 @@ from ...page.models import Page
 from ...product.models import (
     AttributeChoiceValue, Category, Collection, Product, ProductAttribute,
     ProductImage, ProductType, ProductVariant, Stock, StockLocation)
+from ...product.thumbnails import create_product_thumbnails
 from ...shipping.models import ANY_COUNTRY, ShippingMethod
 
 fake = Factory.create()
@@ -326,7 +327,9 @@ def create_product_image(product, placeholder_dir):
                           random.choice(os.listdir(placeholder_root)))
     image = ProductImage(
         product=product,
-        image=File(open(img_path, 'rb'))).save()
+        image=File(open(img_path, 'rb')))
+    image.save()
+    create_product_thumbnails.delay(image.pk)
     return image
 
 
