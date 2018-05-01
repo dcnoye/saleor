@@ -113,6 +113,15 @@
   </div>
 </div>
 
+{% if order.user == user %}
+  {% if order.is_fully_paid %}
+
+  <div>
+	Testing.. This is where the links would go.
+  </div>
+  {% endif %}
+{% endif %}
+
 
 {% for fulfillment in fulfillments %}
   <h2 class="order-details__header">

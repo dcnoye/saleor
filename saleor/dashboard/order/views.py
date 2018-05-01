@@ -517,3 +517,253 @@ def change_fulfillment_tracking(request, order_pk, fulfillment_pk):
     return TemplateResponse(
         request, 'dashboard/order/modal/fulfillment_tracking.html', ctx,
         status=status)
+
+
+@staff_member_required
+@permission_required('order.edit_order')
+def order_permit_pdf(request, order_pk):
+    orders = Order.objects.prefetch_related(
+        'user', 'shipping_address', 'billing_address', 'voucher')
+    order = get_object_or_404(orders, pk=order_pk)
+    absolute_url = get_statics_absolute_url(request)
+
+#    rendered_template = get_template(INVOICE_TEMPLATE).render(ctx)
+
+    from PyPDF2 import PdfFileWriter, PdfFileReader
+    import io
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import letter
+
+    packet = io.BytesIO()
+
+    # create a new PDF with Reportlab - and fill in all the data.
+    can = canvas.Canvas(packet, pagesize=letter)
+
+    # Default font
+    can.setFont("Times-Roman", 11)
+
+#------------
+# For debugging purposes.
+#
+#    can.drawString(10, 700, order)
+
+#    i=700
+#
+#    for attr in dir(order.created):
+#        if hasattr( order.created, attr ):
+#            can.drawString(10, i, "order.%s = %s" % (attr, getattr(order.created, attr)))
+#            i=i-5
+# Start a new page.
+#    can.showPage()
+
+
+#--------------------
+# Handle time/date formats here.
+# order.created = 2018-04-22 20:17:35.283285+00:00
+
+#--------------------
+# Start populating the checkboxes (page 1)
+
+    can.setFont("Times-Roman", 18)
+
+    # Contractor
+    can.drawString(155, 604, "X")
+
+    # 1 & 2 Family Dwelling / Townhouse
+    can.drawString(141, 623, "X")
+
+    # Mobile/Manufactured home
+    can.drawString(270, 623, "X")
+
+    # Design Professional
+    can.drawString(303, 604, "X")
+
+    # Residential 3+ units/Multi-family
+    can.drawString(388, 623, "X")
+
+    # Commercial
+    can.drawString(523, 623, "X")
+
+    # Owner Builder
+    can.drawString(485, 604, "X")
+
+
+#-------------------------------
+# Start populating the Property Information (page 1)
+
+    # Reset the font in case it was changed elsewhere
+    can.setFont("Times-Roman", 11)
+
+    # Those are 13 y units apart
+    can.drawString(120, 574, "Parcel/Folio Line 1234567890")
+
+    can.drawString(120, 561, order.billing_address.street_address_1)
+#    can.drawString(120, 561, "Address Line 1 12345678901234567890")
+#    can.drawString(120, 548, "Address Line 2 12345678901234567890")
+
+    addr2=order.billing_address.street_address_2 + " " + order.billing_address.city + ", " + order.billing_address.country_area + " " + order.billing_address.postal_code
+
+
+    can.drawString(120, 548, addr2)
+
+
+    # 14 units..
+    can.drawString(120, 534, order.billing_address.full_name) # Owner name
+
+    # 13 units
+    can.drawString(120, 521, order.billing_address.phone.as_national) # Owner phone
+
+    can.drawString(120, 508, "Subdivision")
+    
+    # etc. 
+    can.drawString(120, 494, "Lot/Block/Unit")
+    can.drawString(120, 481, "SDP/PL#")
+    can.drawString(120, 468, "PL# Filename Line 1")
+    can.drawString(120, 455, "PL# Filename Line 2")
+
+
+#-----------------------
+# Start populating application information
+    can.setFont("Times-Roman", 16)
+
+    # Sub contractors.
+    # Elec
+    can.drawString(120, 410, "X")
+
+    # Plumb
+    can.drawString(157, 410, "X")
+
+    # Mech
+    can.drawString(208, 410, "X")
+
+    # Roof
+    can.drawString(256, 410, "X")
+
+    # Septic
+    can.drawString(299, 410, "X")
+
+    # Low Voltage
+    can.drawString(342, 410, "X")
+
+    # Shutters
+    can.drawString(407, 410, "X")
+
+    # ELECT from house
+    can.drawString(455, 410, "X")
+
+    # Gas
+    can.drawString(540, 410, "X")
+
+
+    # Related to Hurricane Irma
+    # No
+    can.drawString(553, 335, "X")
+    # Yes
+    can.drawString(518, 335, "X")
+
+
+#----------------------
+# Start populating project information
+
+    # Reset the font in case it was changed elsewhere
+    can.setFont("Times-Roman", 11)
+
+    # Project name
+    can.drawString(278, 303, "Project Name")
+
+    # Declared Value
+    can.drawString(504, 303, "Declared Value")
+
+    # Line 2
+    can.drawString(23, 274, "Line 2 1234567890123456789012345678901234567890")
+
+    # Line 3
+    can.drawString(23, 260, "Line 3 1234567890123456789012345678901234567890")
+
+    # Line 4
+    can.drawString(23, 246, "Line 4 1234567890123456789012345678901234567890")
+
+    # Line 5
+    can.drawString(23, 232, "Line 5 1234567890123456789012345678901234567890")
+
+
+#-----------------------
+# Start a new page.
+    can.showPage()
+
+    # Section A
+#    can.drawString(282,452,"23rd")     # Day
+#    can.drawString(353,452,"December")  # Month
+#    can.drawString(462,452,"18")   # Year
+
+    can.drawString(282,452,order.created.strftime("%d"))     # Day
+    can.drawString(353,452,order.created.strftime("%B"))  # Month
+    can.drawString(462,452,order.created.strftime("%y"))   # Year
+
+
+
+    # Section B
+#    can.drawString(282,325,"23rd")     # Day
+#    can.drawString(353,325,"December")  # Month
+#    can.drawString(462,325,"18")   # Year
+
+    can.drawString(282,325,order.created.strftime("%d"))     # Day
+    can.drawString(353,325,order.created.strftime("%B"))  # Month
+    can.drawString(462,325,order.created.strftime("%y"))   # Year
+
+
+#-----------------------
+# End of entering data into the form.
+#
+
+    # Save it.
+    can.save()
+
+#    from subprocess import call
+#    call(["pwd", ""])
+
+    # move to the beginning of the StringIO buffer
+    packet.seek(0)
+    new_pdf = PdfFileReader(packet)
+
+    # read your existing PDF
+    existing_pdf = PdfFileReader(open("/var/www/saleor/PERMIT APP - ALINKS.pdf", "rb"))
+
+    # Rotate it counter-clockwise
+#    existing_pdf.getPage(0).rotateCounterClockwise(2)
+    # Figure out how to rotate it later on. 
+
+    output = PdfFileWriter()
+
+    # debug 
+#    page0 = new_pdf.getPage(0)
+#    output.addPage(page0)
+    # end debug
+
+    page = existing_pdf.getPage(0)
+    page.mergePage(new_pdf.getPage(0)) # 0 normal, 1 debug
+    output.addPage(page)
+
+    # add the second page.
+    page2 = existing_pdf.getPage(1)
+    output.addPage(page2)
+
+    # Now add in the third page.
+    page3 = existing_pdf.getPage(2)
+    page3.mergePage(new_pdf.getPage(1)) # 1 normal, 2 debug
+    output.addPage(page3)
+
+
+#---------------------------
+# Now write out the pdf data.
+    bytesOut = io.BytesIO()
+    output.write(bytesOut)
+    bytesOut.seek(0)
+
+#    pdf_file, order = create_invoice_pdf(order, absolute_url)
+
+    response = HttpResponse(bytesOut, content_type='application/pdf')
+    name = "permit-%s" % order.id
+    response['Content-Disposition'] = 'filename=%s' % name
+    return response
+

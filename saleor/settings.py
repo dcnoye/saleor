@@ -22,7 +22,7 @@ ROOT_URLCONF = 'saleor.urls'
 WSGI_APPLICATION = 'saleor.wsgi.application'
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Your Name', 'dcnoye@gmail.com'),
 )
 MANAGERS = ADMINS
 
@@ -30,14 +30,19 @@ INTERNAL_IPS = get_list(os.environ.get('INTERNAL_IPS', '127.0.0.1'))
 
 CACHES = {'default': django_cache_url.config()}
 
-if os.environ.get('REDIS_URL'):
-    CACHES['default'] = {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.environ.get('REDIS_URL')}
-
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "example"
+    }
+}
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://saleor:saleor@localhost:5432/saleor',
+        default='postgres://upermit:Letmein123!@localhost:5432/upermit',
         conn_max_age=600)}
 
 
@@ -121,7 +126,8 @@ TEMPLATES = [{
         'string_if_invalid': '<< MISSING VARIABLE "%s" >>' if DEBUG else ''}}]
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ.get('SECRET_KEY')
+#SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "dcnoye@gmail.com"
 
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -172,6 +178,7 @@ INSTALLED_APPS = [
     'saleor.site',
     'saleor.data_feeds',
     'saleor.page',
+    'saleor.upermit',
 
     # External apps
     'versatileimagefield',
@@ -255,8 +262,22 @@ PAYMENT_HOST = get_host
 
 PAYMENT_MODEL = 'order.Payment'
 
+# production environment
+#PAYMENT_VARIANTS = {
+#    'authorizenet': ('payments.authorizenet.AuthorizeNetProvider', {
+#        'login_id': '4u2Ran8CE',
+#        'transaction_key': '6797TFL6w559sjpD',
+#        'endpoint': 'https://secure.authorize.net/gateway/transact.dll'})}
+
+# use staging environment
 PAYMENT_VARIANTS = {
-    'default': ('payments.dummy.DummyProvider', {})}
+    'authorizenet': ('payments.authorizenet.AuthorizeNetProvider', {
+        'login_id': '1234login',
+        'transaction_key': '1234567890abcdef',
+        'endpoint': 'https://test.authorize.net/gateway/transact.dll'})}
+
+#PAYMENT_VARIANTS = {
+#    'default': ('payments.dummy.DummyProvider', {})}
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
@@ -283,7 +304,7 @@ bootstrap4 = {
 
 TEST_RUNNER = ''
 
-ALLOWED_HOSTS = get_list(os.environ.get('ALLOWED_HOSTS', 'localhost'))
+ALLOWED_HOSTS = get_list(os.environ.get('ALLOWED_HOSTS', 'chieffa.com'))
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

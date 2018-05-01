@@ -39,4 +39,6 @@ urlpatterns = [
     url(r'^(?P<order_pk>\d+)/fulfillment/(?P<fulfillment_pk>\d+)/packing-slips/$',  # noqa
         views.fulfillment_packing_slips, name='fulfillment-packing-slips'),
     url(r'^(?P<order_pk>\d+)/invoice/$',
-        views.order_invoice, name='order-invoice')]
+        views.order_invoice, name='order-invoice'),
+    url(r'^(?P<order_pk>\d+)/permit/$',
+        views.order_permit_pdf, name='order-permit-pdf')]

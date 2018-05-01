@@ -18,6 +18,7 @@ from .order.urls import urlpatterns as order_urls
 from .page.urls import urlpatterns as page_urls
 from .product.urls import urlpatterns as product_urls
 from .search.urls import urlpatterns as search_urls
+from .upermit.urls import urlpatterns as upermit_urls
 
 handler404 = 'saleor.core.views.handle_404'
 
@@ -43,7 +44,8 @@ urlpatterns = [
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'', include('payments.urls')),
-    url('', include('social_django.urls', namespace='social'))]
+    url('', include('social_django.urls', namespace='social')),
+    url(r'^upermit/', include((upermit_urls, 'upermit'), namespace='upermit'))]
 
 if settings.DEBUG:
     # static files (images, css, javascript, etc.)

@@ -13,8 +13,10 @@ from .validators import (
 from ..core import load_checkout
 from ..forms import ShippingMethodForm
 from ...account.forms import LoginForm
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 @load_checkout
 @validate_cart
 @validate_is_shipping_required
