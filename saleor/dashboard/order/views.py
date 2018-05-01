@@ -727,7 +727,7 @@ def order_permit_pdf(request, order_pk):
     new_pdf = PdfFileReader(packet)
 
     # read your existing PDF
-    existing_pdf = PdfFileReader(open("/var/www/saleor/PERMIT APP - ALINKS.pdf", "rb"))
+    existing_pdf = PdfFileReader(open("/var/www/saleor/template_0001.pdf", "rb"))
 
     # Rotate it counter-clockwise
 #    existing_pdf.getPage(0).rotateCounterClockwise(2)
