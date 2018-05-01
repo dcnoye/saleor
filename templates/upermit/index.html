@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap_form from bootstrap4 %}
+
+{% block title %}
+U-Permit Services
+{% endblock %}
+
+{% block breadcrumb %}
+  <ul class="breadcrumbs list-unstyled">
+    <li>
+      <a href="{% url 'home'%}">
+        {% trans "Home" context "Main navigation item" %}
+      </a>
+    </li>
+    <li>
+      <a href="{% url "upermit:index" %}">
+        {% trans "upermit" context "Main navigation item" %}
+      </a>
+    </li>
+    <li>
+      <a href="{{ order.get_absolute_url }}">
+        {% blocktrans trimmed context "Order details breadcrumb" %}
+          Order {{ order }}
+        {% endblocktrans %}
+      </a>
+    </li>
+  </ul>
+{% endblock breadcrumb %}
+
+{% block meta_tags %}
+  <meta name="robots" content="noindex, nofollow">
+{% endblock meta_tags %}
