@@ -2,12 +2,14 @@ from django.conf.urls import url
 
 from . import views
 from .views import TechnicianList
+from .views import PermitList
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^$', PermitList.as_view(), name='index'),
     url(r'^technicians/$', TechnicianList.as_view(), name='technicians'),
     url(r'^technicians/new/$', views.new_technician, name='new_technician'),
-    url(r'^permit_form/$', views.permit_form, name="permit_form")]
+    url(r'^permit_form/$', views.permit_form, name="permit_form"),
+    url(r'^permits/$', PermitList.as_view(), name='permits')]
     
 #    url(r'^technicians-old/', views.technicians_list, name='technicians')]
 #    url(r'^shipping-address/', views.shipping_address_view,

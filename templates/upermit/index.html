@@ -32,15 +32,16 @@ Past Order List
   <div id="content-container" class="container p-none">
     <ul id="al-group" class="strip-list">
       <table border=1>
-        <tr><td>Order date</td><td>1</td><td>2</td><td>3</td></tr>
-        {% for line in permit %}
+        <tr><td>Order date</td><td>Parcel</td><td>Street Address 1</td><td>Street Address 2</td><td>Actions</td></tr>
+        {% for line in permits %}
         <tr>
-          <td>{{ line.parcel }}</td>
           <td>{{ line.when_created }}</td>
-          <td></td>
-          <td></td>
+          <td>{{ line.parcel }}</td>
+          <td>{{ line.job_street_address_1 }}</td>
+          <td>{{ line.job_street_address_2 }}</td>
+          <td><a href="permit_form?id={{ line.id }}">Complete permit form</a></td>
         </tr>
-                
+        
         {% endfor %}
       </table>
       
@@ -52,5 +53,5 @@ Past Order List
 
 
 
-<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
+
 {% endblock content %}

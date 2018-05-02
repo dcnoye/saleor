@@ -52,6 +52,7 @@ It makes sense to have index for "past orders" and have technician's index
 be seperate. 
 """
 
+"""
 def index(request):
     #permit = Permit.objects.prefetch_related('lines')
     permit = Permit.objects.all()
@@ -65,7 +66,8 @@ def index(request):
     form = PermitForm()
     
     return TemplateResponse(request, 'upermit/index.html', {'permit': permit} )
-	
+"""
+    
 
 def technicians_list(request):
 	"""
@@ -122,7 +124,7 @@ def new_technician(request):
 	return TemplateResponse(request, 'upermit/new_technician.html', {'form': form })
 
 
-def permit_form(request, token):
+def permit_form(request):
     permit = Permit.objects.prefetch_related('lines');
     
     # Test to see if the user is anonymous or not - i.e. only allow registered users
@@ -153,4 +155,18 @@ class TechnicianList(ListView):
 	@method_decorator(login_required)
 	def dispatch(self, *args, **kwargs):
 		return super(TechnicianList, self).dispatch(*args, **kwargs)		
+	
+
+class PermitList(ListView):
+	model = Permit
+	template_name = 'upermit/index.html'
+	context_object_name = 'permits'
+	
+#	def get_queryset(self):
+#		permit_list = Permit.objects.filter(user=self.request.user)
+#		return permit_list
+		
+	@method_decorator(login_required)
+	def dispatch(self, *args, **kwargs):
+		return super(PermitList, self).dispatch(*args, **kwargs)		
 	

@@ -36,7 +36,11 @@ Technician List
         <tr>
           <td>{{ line.fullname }}</td>
           <td>{{ line.datetime_created }}</td>
-          <td><img src="{{ MEDIA_URL }}{{ line.certificate_photo }}"></img></td>
+          {% if line.certificate_photo %}
+          <td><img src="{{ MEDIA_URL }}{{ line.certificate_photo }}" ></img></td>
+          {% else %}
+          <td></td>
+          {% endif %}
           <td>{{ line.approved }}</td>
         </tr>
                 
