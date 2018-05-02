@@ -20,13 +20,7 @@ Past Order List
         {% trans "upermit" context "Main navigation item" %}
       </a>
     </li>
-    <li>
-      <a href="{{ order.get_absolute_url }}">
-        {% blocktrans trimmed context "Order details breadcrumb" %}
-          Order {{ order }}
-        {% endblocktrans %}
-      </a>
-    </li>
+
   </ul>
 {% endblock breadcrumb %}
 
@@ -38,13 +32,13 @@ Past Order List
   <div id="content-container" class="container p-none">
     <ul id="al-group" class="strip-list">
       <table border=1>
-        <tr><td>Order date</td><td></td><td>2</td><td>3</td></tr>
+        <tr><td>Order date</td><td>1</td><td>2</td><td>3</td></tr>
         {% for line in permit %}
         <tr>
-          <td>{{ line.fullname }}</td>
-          <td>{{ line.datetime_created }}</td>
-          <td><img src="{{ MEDIA_URL }}{{ line.certificate_photo }}"></img></td>
-          <td>{{ line.approved }}</td>
+          <td>{{ line.parcel }}</td>
+          <td>{{ line.when_created }}</td>
+          <td></td>
+          <td></td>
         </tr>
                 
         {% endfor %}
@@ -55,6 +49,8 @@ Past Order List
   
 <!--  <a href={% url "upermit:new_technician" %}>Add a new technician</a> -->
   </div>
-{% debug %}
 
+
+
+<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
 {% endblock content %}

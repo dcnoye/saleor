@@ -32,21 +32,24 @@ class Technician(models.Model):
 		
 class Permit(models.Model):
 #    building_type = models.CharField(max_length=100) # (1_2_family_townhouse, mobile_manu, res_3_multifam, commercial)
-    OTFT = 'ONETWO'
-    MOBMANU = 'MOBMAN'
-    MULTIFAM = 'RS3MLT'
+    ONE_TWO_FAMILY_TOWNHOUSE = 'ONETWO'
+    MOBILE_MANU = 'MOBMAN'
+    RES_3_MULTIFAM = 'RS3MLT'
     COMMERCIAL = 'COMMER'
+    
     BUILDING_TYPE_CHOICES = (
         (ONE_TWO_FAMILY_TOWNHOUSE, '1 and 2 Family dwelling Townhouse'),
         (MOBILE_MANU, 'Mobile Manufactured home'),
         (RES_3_MULTIFAM, 'Residential 3 units Multi family'),
         (COMMERCIAL, 'Commercial')
     )
+    
     building_type = models.CharField(
         max_length=6,
         choices=BUILDING_TYPE_CHOICES,
         default=ONE_TWO_FAMILY_TOWNHOUSE
     )
+    
     CONTRACTOR = 'CO'
     DESIGN_PRO = 'DP'
     OWNER_BUILDER = 'OB'
@@ -56,12 +59,15 @@ class Permit(models.Model):
         (DESIGN_PRO, 'Design Professional'),
         (OWNER_BUILDER, 'Owner Builder')
     )
+    
     permittee_type = models.CharField(
         max_length=2,
         choices=PERMITTEE_TYPE_CHOICES,
         default=CONTRACTOR
     )
-    #permittee_type = models.CharField(max_length=100) # (contractor/designpro/ownerbuilder)
+    
+    #permittee_type = models.CharField(max_length=100) # (contractor/designpro/ownerbuilder
+    
     parcel = models.CharField(max_length=100) 
     job_street_address_1 = models.CharField(max_length=100) 
     job_street_address_2 = models.CharField(max_length=100) 
@@ -71,8 +77,11 @@ class Permit(models.Model):
     lot_block_unit = models.CharField(max_length=100) 
     sdp_pl = models.CharField(max_length=100) 
     pl_filename_line1 = models.CharField(max_length=100) 
-    pl_filename_line2 = models.CharField(max_length=100) 
+    pl_filename_line2 = models.CharField(max_length=100)
+    
     subcontractors  = models.CharField(max_length=100)  # (gas/elec/plumb/mech/roof/septic/lowvoltage/shutters/electfromhouse)
+    
+    
     related_hurricane_irma = models.CharField(max_length=100) 
     project_name = models.CharField(max_length=100) 
     declared_value = models.CharField(max_length=100) 
@@ -80,7 +89,16 @@ class Permit(models.Model):
     project_line_3 = models.CharField(max_length=100) 
     project_line_4 = models.CharField(max_length=100) 
     project_line_5 = models.CharField(max_length=100) 
-	
+
+    when_created = models.DateTimeField(
+        auto_now_add=True, editable=False)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='permits',
+        on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name_plural = 'permits'
+			
 	
 class Inspection(models.Model):
 	test = models.CharField()

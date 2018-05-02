@@ -53,7 +53,8 @@ be seperate.
 """
 
 def index(request):
-    permit = Permit.objects.prefetch_related('lines');
+    #permit = Permit.objects.prefetch_related('lines')
+    permit = Permit.objects.all()
     
     # Test to see if the user is anonymous or not - i.e. only allow registered users
     # to touch this.
@@ -62,8 +63,8 @@ def index(request):
         return response
         
     form = PermitForm()
-
-	return TemplateResponse(request, 'upermit/index.html', {'permit': permit} )
+    
+    return TemplateResponse(request, 'upermit/index.html', {'permit': permit} )
 	
 
 def technicians_list(request):
@@ -145,9 +146,9 @@ class TechnicianList(ListView):
 	template_name = 'upermit/technician_list.html'
 	context_object_name = 'technicians'
 	
-#	def get_queryset(self):
-#		tech_list = Technician.objects.filter(user=self.request.user)
-#		return tech_list
+	def get_queryset(self):
+		tech_list = Technician.objects.filter(user=self.request.user)
+		return tech_list
 		
 	@method_decorator(login_required)
 	def dispatch(self, *args, **kwargs):
