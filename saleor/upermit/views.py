@@ -53,8 +53,17 @@ be seperate.
 """
 
 def index(request):
-	ctx = {'hi': 'bye'}
-	return TemplateResponse(request, 'upermit/index.html', ctx)
+    permit = Permit.objects.prefetch_related('lines');
+    
+    # Test to see if the user is anonymous or not - i.e. only allow registered users
+    # to touch this.
+    if not request.user.is_authenticated:
+        response = HttpResponse("")
+        return response
+        
+    form = PermitForm()
+
+	return TemplateResponse(request, 'upermit/index.html', {'permit': permit} )
 	
 
 def technicians_list(request):
@@ -111,6 +120,25 @@ def new_technician(request):
 		
 	return TemplateResponse(request, 'upermit/new_technician.html', {'form': form })
 
+
+def permit_form(request, token):
+    permit = Permit.objects.prefetch_related('lines');
+    
+    # Test to see if the user is anonymous or not - i.e. only allow registered users
+    # to touch this.
+    if not request.user.is_authenticated:
+        response = HttpResponse("")
+        return response
+        
+        
+    if request.method == 'POST':
+        current_user = request.user
+    else:
+        form = PermitForm()
+	
+	
+    return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
+    
 
 class TechnicianList(ListView):
 	model = Technician

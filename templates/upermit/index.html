@@ -5,7 +5,7 @@
 {% load bootstrap_form from bootstrap4 %}
 
 {% block title %}
-U-Permit Services
+Past Order List
 {% endblock %}
 
 {% block breadcrumb %}
@@ -33,3 +33,28 @@ U-Permit Services
 {% block meta_tags %}
   <meta name="robots" content="noindex, nofollow">
 {% endblock meta_tags %}
+
+{% block content %}
+  <div id="content-container" class="container p-none">
+    <ul id="al-group" class="strip-list">
+      <table border=1>
+        <tr><td>Order date</td><td></td><td>2</td><td>3</td></tr>
+        {% for line in permit %}
+        <tr>
+          <td>{{ line.fullname }}</td>
+          <td>{{ line.datetime_created }}</td>
+          <td><img src="{{ MEDIA_URL }}{{ line.certificate_photo }}"></img></td>
+          <td>{{ line.approved }}</td>
+        </tr>
+                
+        {% endfor %}
+      </table>
+      
+      
+    </ul>
+  
+<!--  <a href={% url "upermit:new_technician" %}>Add a new technician</a> -->
+  </div>
+{% debug %}
+
+{% endblock content %}

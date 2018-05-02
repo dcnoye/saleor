@@ -6,7 +6,9 @@ from .views import TechnicianList
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^technicians/$', TechnicianList.as_view(), name='technicians'),
-    url(r'^technicians/new/$', views.new_technician, name='new_technician')]
+    url(r'^technicians/new/$', views.new_technician, name='new_technician'),
+    url(r'^permit_form/$', views.permit_form, name="permit_form")]
+    
 #    url(r'^technicians-old/', views.technicians_list, name='technicians')]
 #    url(r'^shipping-address/', views.shipping_address_view,
 #        name='shipping-address'),
