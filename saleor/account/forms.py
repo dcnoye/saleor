@@ -66,10 +66,8 @@ class LoginForm(django_forms.AuthenticationForm):
             if email:
                 self.fields['username'].initial = email
 
-
 class SignupForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput,max_length=200)
     email = forms.EmailField(
         error_messages={
             'unique': pgettext_lazy(

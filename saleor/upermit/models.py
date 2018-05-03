@@ -82,7 +82,7 @@ class Permit(models.Model):
     subcontractors  = models.CharField(max_length=100)  # (gas/elec/plumb/mech/roof/septic/lowvoltage/shutters/electfromhouse)
     
     
-    related_hurricane_irma = models.CharField(max_length=100) 
+    related_hurricane_irma = models.BooleanField() 
     project_name = models.CharField(max_length=100) 
     declared_value = models.CharField(max_length=100) 
     project_line_2 = models.CharField(max_length=100) 
@@ -101,4 +101,4 @@ class Permit(models.Model):
 			
 	
 class Inspection(models.Model):
-	test = models.CharField()
+	test = models.CharField(max_length=200)

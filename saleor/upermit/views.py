@@ -136,11 +136,20 @@ def permit_form(request):
         
     if request.method == 'POST':
         current_user = request.user
+
+        form = PermitForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user_id = current_user.id
+            form.save()
+        
+        
+        return TemplateResponse(request, 'upermit/index.html')
     else:
         form = PermitForm()
 	
 	
-    return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
+        return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
     
 
 class TechnicianList(ListView):

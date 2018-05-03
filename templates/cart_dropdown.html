@@ -54,9 +54,6 @@
   {% else %}
     <div class="text-md-center cart-dropdown__empty">
       <h3>{% trans "There are no products in your shopping cart." context "Empty cart message" %}</h3>
-      <img data-src="{% static 'images/empty-cart-bg.png' %}"
-           src="{% placeholder size=255 %}"
-           class="lazyload lazypreload">
       <a href="{% url 'home' %}" class="btn primary">{% trans "Check out our sales" context "Empty cart link" %}</a>
     </div>
   {% endif %}
