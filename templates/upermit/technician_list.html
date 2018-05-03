@@ -37,7 +37,7 @@ Technician List
           <td>{{ line.fullname }}</td>
           <td>{{ line.datetime_created }}</td>
           {% if line.certificate_photo %}
-          <td><img src="{{ MEDIA_URL }}{{ line.certificate_photo }}" ></img></td>
+          <td><img width="50" height="50" src="{{ MEDIA_URL }}{{ line.certificate_photo }}" ></img></td>
           {% else %}
           <td></td>
           {% endif %}
