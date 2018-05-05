@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap_form from bootstrap4 %}
+
+{% block title %}
+Past Order List
+{% endblock %}
+
+{% block breadcrumb %}
+  <ul class="breadcrumbs list-unstyled">
+    <li>
+      <a href="{% url 'home'%}">
+        {% trans "Home" context "Main navigation item" %}
+      </a>
+    </li>
+    <li>
+      <a href="{% url "upermit:index" %}">
+        {% trans "upermit" context "Main navigation item" %}
+      </a>
+    </li>
+
+  </ul>
+{% endblock breadcrumb %}
+
+{% block meta_tags %}
+  <meta name="robots" content="noindex, nofollow">
+{% endblock meta_tags %}
+
+{% block content %}
+  <div id="content-container" class="container p-none">
+    <ul id="al-group" class="strip-list">
+      <table border=1>
+        <tr><td>Order date</td><td>Parcel</td><td>Street Address 1</td><td>Street Address 2</td><td>Actions</td></tr>
+        {% for line in permits %}
+        <tr>
+          <td>{{ line.when_created }}</td>
+          <td>{{ line.parcel }}</td>
+          <td>{{ line.job_street_address_1 }}</td>
+          <td>{{ line.job_street_address_2 }}</td>
+          <td><a href="permit_form?id={{ line.id }}">Complete permit form</a></td>
+        </tr>
+        
+        {% endfor %}
+      </table>
+      
+      
+    </ul>
+  
+<!--  <a href={% url "upermit:new_technician" %}>Add a new technician</a> -->
+  </div>
+
+
+
+
+{% endblock content %}

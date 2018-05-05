@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap_form from bootstrap4 %}
+
+{% block title %}
+Add Technician
+{% endblock %}
+
+
+{% block content %}
+	<div id="warning">
+		<p>
+			All fields must be filled out. You are responsible for making sure that all data provided is accurate to the best of your knowledge. <br>
+			We accept no liability for costs that may arise from providing incorrect data. <b>Always double check the entered data!</b><br>
+		</p>
+	</div>
+	<div id="content-container" class="container p-none">
+		<div class="side-p">
+			<form id="new_tech" action="." method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<table class="table">
+					<tbody>
+						<tr>
+							<th>First and Last name</th>
+							<th>{{ form.address.label }}</th>
+							<th>{{ form.phone.label }}</th>
+							<th>{{ form.certificate_photo.label }}</th> 
+						</tr>
+						<tr>
+							<td>{{ form.fullname }}</td>
+							<td>{{ form.address }}</td>
+							<td>{{ form.phone }}</td>
+							<td>{{ form.certificate_photo }}</td> 
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit">Save</button>
+			</form>
+
+<!--
+			The below code was to allow the person to first upload a picture, then fill out the form.
+			However, this takes more time to do than just having the person do all at once. Later on
+			can go back and add a picture "preview". 
+			
+			<br><br>
+			<form id="new_tech_pic" action="." method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<table class="table">
+					<tbody>
+						<tr>
+							<th>{{ form.certificate_photo.label }}</th>
+						</tr>
+						<tr>
+							<td>{{ form.certificate_photo }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit">Save</button>
+			</form>
+
+
+			{% if uploaded_file_url %}
+				<p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+			{% endif %}
+-->
+			<br><br>
+			<p><a href="{% url 'home' %}">Return to home</a></p>			
+			
+		</div>
+	</div>
+{% endblock content %}
