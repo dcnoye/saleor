@@ -25,7 +25,7 @@ class PermitForm(forms.ModelForm):
     
     subcontractors  = forms.CharField(required=False, max_length=100)  # (gas/elec/plumb/mech/roof/septic/lowvoltage/shutters/electfromhouse)
 
-    related_hurricane_irma = forms.BooleanField(required=True)
+    related_hurricane_irma = forms.BooleanField(required=False)
     
     project_name = forms.CharField(required=True, max_length=100)
     declared_value = forms.CharField(required=False, max_length=100)
@@ -49,7 +49,7 @@ class PermitForm(forms.ModelForm):
 #			'related_hurricane_irma': forms.CheckboxSelectMultiple }
  #           'related_hurricane_irma': forms.BooleanField }
     
-    HouseID = forms.CharField(max_length=100)
+    #HouseID = forms.CharField(max_length=100)
     
     
 class InspectionForm(forms.ModelForm):

@@ -9,7 +9,8 @@ urlpatterns = [
     url(r'^technicians/$', TechnicianList.as_view(), name='technicians'),
     url(r'^technicians/new/$', views.new_technician, name='new_technician'),
     url(r'^permit_form/$', views.permit_form, name="permit_form"),
-    url(r'^permits/$', PermitList.as_view(), name='permits')]
+    url(r'^permits/$', PermitList.as_view(), name='permits'),
+    url(r'^permit_pdf/(?P<id>\d+)/$', views.order_permit_pdf, name='order-permit-pdf')]
     
 #    url(r'^technicians-old/', views.technicians_list, name='technicians')]
 #    url(r'^shipping-address/', views.shipping_address_view,

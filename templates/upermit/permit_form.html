@@ -11,6 +11,7 @@ Redeem Permit
 
 {% block content %}
 	<div id="content-container" class="container p-none">
+		<div>Form Errors: {{ form.errors }}  Form Non Field Errors: {{ form.non_field_errors }}</div>
 		<div class="side-p">
 			<form id="new_permit" action="." method="post" enctype="multipart/form-data">
 				{% csrf_token %}

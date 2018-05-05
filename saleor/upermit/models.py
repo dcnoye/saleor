@@ -95,6 +95,9 @@ class Permit(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='permits',
         on_delete=models.SET_NULL)
+        
+    #user_id = models.IntegerField()
+    order_id = models.IntegerField()
 
     class Meta:
         verbose_name_plural = 'permits'
