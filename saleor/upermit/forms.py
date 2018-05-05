@@ -9,8 +9,8 @@ from .models import Inspection
 
 
 class PermitForm(forms.ModelForm):
-#    building_type = forms.CharField(required=True, max_length=6)
-#    permittee_type = forms.CharField(required=True, max_length=2)
+    building_type = forms.CharField(required=True, max_length=6)
+    permittee_type = forms.CharField(required=True, max_length=2)
     parcel = forms.CharField(required=True, max_length=100)    
   
     job_street_address_1 = forms.CharField(required=True, max_length=100)
@@ -25,7 +25,7 @@ class PermitForm(forms.ModelForm):
     
     subcontractors  = forms.CharField(required=False, max_length=100)  # (gas/elec/plumb/mech/roof/septic/lowvoltage/shutters/electfromhouse)
 
-#    related_hurricane_irma = forms.BooleanField(required=True)
+    related_hurricane_irma = forms.BooleanField(required=True)
     
     project_name = forms.CharField(required=True, max_length=100)
     declared_value = forms.CharField(required=False, max_length=100)

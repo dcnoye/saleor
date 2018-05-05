@@ -5,7 +5,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.db.models import Q, Sum
 from django.template.response import TemplateResponse
 from payments import PaymentStatus
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,7 @@ from ..order import OrderStatus
 from ..order.models import Order, Payment
 from ..product.models import Product
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from .models import Technician
 from .models import Permit
@@ -125,7 +125,7 @@ def new_technician(request):
 
 
 def permit_form(request):
-    permit = Permit.objects.prefetch_related('lines');
+    #permit = Permit.objects.prefetch_related('lines');
     
     # Test to see if the user is anonymous or not - i.e. only allow registered users
     # to touch this.
@@ -136,20 +136,19 @@ def permit_form(request):
         
     if request.method == 'POST':
         current_user = request.user
-
+        # create a form instance and populate it with data from the request:
         form = PermitForm(request.POST)
+        # check whether it's valid:
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user_id = current_user.id
             form.save()
-        
-        
-        return TemplateResponse(request, 'upermit/index.html')
+            return TemplateResponse(request, 'upermit/index.html')
+    # if a GET (or any other method) we'll create a blank form
     else:
         form = PermitForm()
 	
-	
-        return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
+    return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
     
 
 class TechnicianList(ListView):
