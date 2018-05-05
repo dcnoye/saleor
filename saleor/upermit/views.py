@@ -388,7 +388,7 @@ def order_permit_pdf(request, id):
     if (findWholeWord('GAS')(permit.subcontractors)):    
         can.drawString(540, 410, "X")
 
-    if (permit.related_hurricane_irma == "0"):
+    if (permit.related_hurricane_irma == "false"):
         can.drawString(553, 335, "X")
     else:
         can.drawString(518, 335, "X")
