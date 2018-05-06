@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$', PermitList.as_view(), name='index'),
     url(r'^technicians/$', TechnicianList.as_view(), name='technicians'),
     url(r'^technicians/new/$', views.new_technician, name='new_technician'),
+    url(r'^(?P<pk>[0-9]+)/delete/$', views.delete_technician, name='delete_technician'),
     url(r'^permit_form/$', views.permit_form, name="permit_form"),
     url(r'^permit_confirm/$', views.permit_confirm, name="permit_confirm"),
     url(r'^permits/$', PermitList.as_view(), name='permits'),

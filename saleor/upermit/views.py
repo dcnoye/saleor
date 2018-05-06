@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 from django.contrib.admin.views.decorators import (
     staff_member_required as _staff_member_required, user_passes_test)
@@ -101,10 +102,6 @@ def new_technician(request):
 	if not request.user.is_authenticated:
 		response = HttpResponse("")
 		return response
-		
-	
-	
-	
 	
 	#if request.method == 'POST' and request.FILES['certificate_photo']:
 		
@@ -124,6 +121,22 @@ def new_technician(request):
 		form = TechnicianForm()
 		
 	return TemplateResponse(request, 'upermit/new_technician.html', {'form': form })
+
+@staff_member_required
+@permission_required('account.edit_staff')
+def delete_technician(request, pk):
+    queryset = Technician.objects.prefetch_related('lines')
+    staff = get_object_or_404(queryset, pk=pk)
+    if request.method == 'POST':
+        staff.delete()
+        msg = pgettext_lazy(
+            'Dashboard message', 'Removed tech member %s') % (staff,)
+        messages.success(request, msg)
+        return redirect('upermit:technicians')
+    ctx = {'staff': staff, 'orders': staff.count()}
+    return TemplateResponse(
+        request, 'upermit/confirm_delete.html', ctx)
+
 
 
 def permit_form(request):

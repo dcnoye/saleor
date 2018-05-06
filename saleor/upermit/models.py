@@ -11,7 +11,11 @@ class Technician(models.Model):
 		
 	phone = models.CharField(
 		max_length=100)
-		
+
+	approved = models.CharField(
+		max_length=1,
+		default=0)
+
 	certificate_photo = models.ImageField(upload_to='images/%m/%d')
 	
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='technicians',

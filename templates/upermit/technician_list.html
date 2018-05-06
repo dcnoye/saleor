@@ -31,7 +31,7 @@ Technician List
   <div id="content-container" class="container p-none">
     <ul id="al-group" class="strip-list">
       <table border=1>
-        <tr><td>Full name</td><td>Date added</td><td>Photo</td><td>Approved</td></tr>
+        <tr><td>Full name</td><td>Date added</td><td>Photo</td><td>Approved</td><td>Tech ID#</td></tr>
         {% for line in technicians %}
         <tr>
           <td>{{ line.fullname }}</td>
@@ -42,6 +42,7 @@ Technician List
           <td></td>
           {% endif %}
           <td>{{ line.approved }}</td>
+          <td>{{ line.id }}</td>
         </tr>
                 
         {% endfor %}
