@@ -28,8 +28,7 @@ class Technician(models.Model):
 		return u"%s's Technician Info" %self.user_id"""
 		
 		
-		
-		
+    		
 class Permit(models.Model):
 #    building_type = models.CharField(max_length=100) # (1_2_family_townhouse, mobile_manu, res_3_multifam, commercial)
     ONE_TWO_FAMILY_TOWNHOUSE = 'ONETWO'
@@ -44,22 +43,23 @@ class Permit(models.Model):
         (COMMERCIAL, 'Commercial')
     )
     
-    building_type = models.CharField(
-        max_length=6,
-        choices=BUILDING_TYPE_CHOICES,
-        default=ONE_TWO_FAMILY_TOWNHOUSE
-    )
-    
     CONTRACTOR = 'CO'
     DESIGN_PRO = 'DP'
     OWNER_BUILDER = 'OB'
 
     PERMITTEE_TYPE_CHOICES = (
-        (CONTRACTOR, 'Contractor'),
-        (DESIGN_PRO, 'Design Professional'),
-        (OWNER_BUILDER, 'Owner Builder')
-    )
+		(CONTRACTOR, 'Contractor'),
+		(DESIGN_PRO, 'Design Professional'),
+		(OWNER_BUILDER, 'Owner Builder'),
+	)
     
+    
+    building_type = models.CharField(
+        max_length=6,
+        choices=BUILDING_TYPE_CHOICES,
+        default=ONE_TWO_FAMILY_TOWNHOUSE
+    )
+
     permittee_type = models.CharField(
         max_length=2,
         choices=PERMITTEE_TYPE_CHOICES,
@@ -69,8 +69,8 @@ class Permit(models.Model):
     #permittee_type = models.CharField(max_length=100) # (contractor/designpro/ownerbuilder
     
     parcel = models.CharField(max_length=100) 
-    job_street_address_1 = models.CharField(max_length=100) 
-    job_street_address_2 = models.CharField(max_length=100) 
+    job_street_address_1 = models.CharField(max_length=45) 
+    job_street_address_2 = models.CharField(max_length=45) 
     owner_name = models.CharField(max_length=100) 
     owner_phone = models.CharField(max_length=100) 
     subdivision = models.CharField(max_length=100) 
@@ -99,8 +99,9 @@ class Permit(models.Model):
     #user_id = models.IntegerField()
     order_id = models.IntegerField()
 
-    class Meta:
-        verbose_name_plural = 'permits'
+    #class Meta:
+     #   verbose_name_plural = 'permits'
+	
 			
 	
 class Inspection(models.Model):

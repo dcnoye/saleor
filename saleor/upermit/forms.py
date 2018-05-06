@@ -7,10 +7,9 @@ from .models import Inspection
 
 
 
-
 class PermitForm(forms.ModelForm):
-    building_type = forms.CharField(required=True, max_length=6)
-    permittee_type = forms.CharField(required=True, max_length=2)
+    building_type = forms.CharField(required=True, max_length=6, widget=forms.Select(choices=Permit.BUILDING_TYPE_CHOICES))
+    permittee_type = forms.CharField(required=True, max_length=2, widget=forms.Select(choices=Permit.PERMITTEE_TYPE_CHOICES))
     parcel = forms.CharField(required=True, max_length=100)    
   
     job_street_address_1 = forms.CharField(required=True, max_length=100)
@@ -24,7 +23,16 @@ class PermitForm(forms.ModelForm):
     pl_filename_line2 = forms.CharField(required=False, max_length=100)
     
     subcontractors  = forms.CharField(required=False, max_length=100)  # (gas/elec/plumb/mech/roof/septic/lowvoltage/shutters/electfromhouse)
-
+    sub_elec = forms.BooleanField(required=False)
+    sub_plumb = forms.BooleanField(required=False)
+    sub_mech = forms.BooleanField(required=False)
+    sub_roof = forms.BooleanField(required=False)
+    sub_septic = forms.BooleanField(required=False)
+    sub_lowvoltage = forms.BooleanField(required=False)
+    sub_shutters = forms.BooleanField(required=False)
+    sub_elecfromhouse = forms.BooleanField(required=False)
+    sub_gas = forms.BooleanField(required=False)
+    
     related_hurricane_irma = forms.BooleanField(required=False)
     
     project_name = forms.CharField(required=True, max_length=100)
@@ -37,14 +45,17 @@ class PermitForm(forms.ModelForm):
     
     class Meta:
         model = Permit
-        fields = ('building_type', 'permittee_type','parcel',
+        fields = ['building_type', 'permittee_type','parcel',
 			'job_street_address_1','job_street_address_2',
 			'owner_name','owner_phone','subdivision',
 			'lot_block_unit','sdp_pl','pl_filename_line1',
 			'pl_filename_line2','subcontractors','related_hurricane_irma',
 			'project_name','declared_value','project_line_2','project_line_3',
-			'project_line_4','project_line_5'
-        )
+			'project_line_4','project_line_5']
+        
+        
+#        widgets = {
+#            'permittee_type': forms.Select(choices=PERMITTEE_TYPE_CHOICES) }
 #        widgets = { 
 #			'related_hurricane_irma': forms.CheckboxSelectMultiple }
  #           'related_hurricane_irma': forms.BooleanField }

@@ -13,7 +13,7 @@ Redeem Permit
 	<div id="content-container" class="container p-none">
 		<div>Form Errors: {{ form.errors }}  Form Non Field Errors: {{ form.non_field_errors }}</div>
 		<div class="side-p">
-			<form id="new_permit" action="." method="post" enctype="multipart/form-data">
+			<form id="new_permit" action="../permit_confirm/" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				
 				<h2><b>General Permit Information</b></h2>
@@ -96,6 +96,34 @@ Redeem Permit
 				
 				<table class="table">
 					<tbody>
+
+						<tr>
+							<td>Subcontractors<br><br>
+							
+							<table>
+								<tr><td>Electrical</td><td>{{ form.sub_elec }}</td>
+								<td>Plumbing</td><td>{{ form.sub_plumb }}</td>
+								<td>Mechanic</td><td>{{ form.sub_mech }}</td>
+								<td>Roof</td><td>{{ form.sub_roof }}</td></tr>
+								
+								<tr>
+								<td>Septic</td><td>{{ form.sub_septic }}</td>
+								<td>Low Voltage</td><td>{{ form.sub_lowvoltage }}</td>
+								<td>Shutters</td><td>{{ form.sub_shutters }}</td>
+								</tr>
+								<tr>
+								<td>Gas</td><td>{{ form.sub_gas }}</td>
+								<td>Elect from house</td><td>{{ form.sub_elecfromhouse }}</td>
+								</tr>
+							
+							</table>	
+							
+							
+							</td>
+							<td>
+							</td>
+							<td style="color:blue;">Optional</td>
+						</tr>
 										
 						<tr>
 							<td width="40%">Related to DAMAGES INCURRED BY HURRICANE IRMA</td>
@@ -161,7 +189,8 @@ Redeem Permit
 				</table>
 
 				<h2><b>Please review the above information</b></h2>
-				
+
+<!--				
 				<table class="table">
 					<tbody>
 								
@@ -172,8 +201,8 @@ Redeem Permit
 						</tr>
 					</tbody>
 				</table>
-								
-                                <button type="submit" class="btn">{% trans "Save" %}</button>
+-->								
+                                <button type="submit" class="btn">{% trans "Submit" %}</button>
 			</form>
 
 <!--
@@ -208,5 +237,5 @@ Redeem Permit
 		</div>
 	</div>
 	
-<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>	
+
 {% endblock content %}

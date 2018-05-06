@@ -164,6 +164,39 @@ def permit_form(request):
 	
     return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
     
+def permit_confirm(request):
+    if not request.user.is_authenticated:
+        response = HttpResponse("")
+        return response
+
+    if request.method == 'POST':
+        
+        current_user = request.user
+        # create a form instance and populate it with data from the request:
+        form = PermitForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Now lets show the confirm template.
+
+#            obj = form.save(commit=False)
+ #           obj.user_id = current_user.id
+  #          obj.order_id = 11
+            
+            
+            retstr=""
+            for attr in dir(form):
+                if hasattr( form, attr ):
+                    retstr = retstr + str((attr, getattr(form, attr)))
+            response = HttpResponse(retstr)
+            return response
+            
+            
+   #         obj.save()
+#            return TemplateResponse(request, 'upermit/index.html')
+    # if a GET (or any other method) we'll create a 
+            return TemplateResponse(request, 'upermit/permit_confirm.html', {'form': form})
+        else:
+            return TemplateResponse(request, 'upermit/index.html')
 
 class TechnicianList(ListView):
 	model = Technician
