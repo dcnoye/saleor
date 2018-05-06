@@ -31,7 +31,11 @@ Technician List
   <div id="content-container" class="container p-none">
     <ul id="al-group" class="strip-list">
       <table border=1>
-        <tr><td>Full name</td><td>Date added</td><td>Photo</td><td>Approved</td><td>Tech ID#</td></tr>
+        <tr><td>Full name</td><td>Date added</td><td>Photo</td>
+          {% if perms.account.edit_staff %}
+            <td>Approved</td><td>Tech ID#</td><td>User ID</td>
+          {% endif %}
+        </tr>
         {% for line in technicians %}
         <tr>
           <td>{{ line.fullname }}</td>
@@ -41,8 +45,11 @@ Technician List
           {% else %}
           <td></td>
           {% endif %}
+          {% if perms.account.edit_staff %}
           <td>{{ line.approved }}</td>
           <td>{{ line.id }}</td>
+          <td>{{ line.user_id }}</td>
+          {% endif %}
         </tr>
                 
         {% endfor %}
