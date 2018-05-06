@@ -45,7 +45,7 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'', include('payments.urls')),
     url('', include('social_django.urls', namespace='social')),
-    url(r'^upermit/', include((upermit_urls, 'upermit'), namespace='upermit')),
+    url(r'^upermit/', include((upermit_urls, 'upermit'), namespace='upermit'))]
 
 if settings.DEBUG:
     # static files (images, css, javascript, etc.)
