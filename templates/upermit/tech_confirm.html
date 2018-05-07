@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap_form from bootstrap4 %}
+
+{% block title %}
+Technician Approval
+{% endblock %}
+
+
+{% block content %}
+	<div id="content-container" class="container p-none">
+		<div>Form Errors: {{ form.errors }}  Form Non Field Errors: {{ form.non_field_errors }}</div>
+		<div class="side-p">
+			<form id="approval" action="../tech_confirm/" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				
+				<h2><b>Technician Approval</b></h2>
+				
+				<table class="table">
+					<tbody>
+						<tr>
+							<td width="40%">Approval</td>
+							<td width="20%">{{ form.approved }}</td>
+							<td style="color:red;">Required</td>
+						</tr>
+					</tbody>
+				</table>
+						
+                                <button type="submit" class="btn">{% trans "Submit" %}</button>
+			</form>
+
+			<br><br>
+			<p><a href="{% url 'home' %}">Return to home</a></p>			
+			
+		</div>
+	</div>
+	
+
+{% endblock content %}
