@@ -25,6 +25,7 @@ from .models import Inspection
 from .forms import TechnicianForm
 from .forms import PermitForm
 from .forms import InspectionForm
+from .forms import ApprovalForm
 
 import datetime
 
@@ -138,6 +139,47 @@ def delete_technician(request, pk):
         request, 'upermit/confirm_delete.html', ctx)
 
 
+def change_db_value(request):
+    queryset = Technician.objects.prefetch_related('lines')
+    value = request.POST.get('value','')
+    staff = get_object_or_404(queryset, value)
+    # database operation
+    ctx = {'staff': staff, 'orders': staff.count()}
+    return TemplateResponse(
+        request, 'upermit/template.html', ctx)
+
+def tech_form(request, tech_id):
+
+    tech = Technician.objects.get(id = tech_id)
+    if tech.approved == 0:
+        tech.approved = 1
+        tech.save()
+        return redirect('upermit:technicians')
+    else:
+        tech.approved = 0
+        tech.save()
+        return redirect('upermit:technicians')
+
+def tech_confirm(request):
+    if not request.user.is_authenticated:
+        response = HttpResponse("")
+        return response
+
+    if request.POST:
+        t_form = ApprovalForm(request.POST)
+
+        if t_form.is_valid():
+
+            tech = Technician.objects.filter(id=request.user_id)
+            t_form = ApprovalForm(request.POST, instance = tech)
+            t_form.save()
+            return redirect('upermit:technicians')
+    else:
+        tech = Technician.objects.filter(id=request.user_id)
+        t_form = ApprovalForm(request.POST, instance = tech)
+
+        return TemplateResponse(request, 'upermit/tech_form.html', {'form': form })
+
 
 def permit_form(request):
     #permit = Permit.objects.prefetch_related('lines');
@@ -189,13 +231,6 @@ def permit_confirm(request):
         form = PermitForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            # Now lets show the confirm template.
-
-#            obj = form.save(commit=False)
- #           obj.user_id = current_user.id
-  #          obj.order_id = 11
-            
-            
             retstr=""
             for attr in dir(form):
                 if hasattr( form, attr ):
@@ -203,13 +238,9 @@ def permit_confirm(request):
             response = HttpResponse(retstr)
             return response
             
-            
-   #         obj.save()
-#            return TemplateResponse(request, 'upermit/index.html')
-    # if a GET (or any other method) we'll create a 
             return TemplateResponse(request, 'upermit/permit_confirm.html', {'form': form})
         else:
-            return TemplateResponse(request, 'upermit/index.html')
+            return TemplateResponse(request, 'upermit/technician_list.html')
 
 class TechnicianList(ListView):
 	model = Technician

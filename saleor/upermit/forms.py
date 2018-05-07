@@ -6,7 +6,6 @@ from .models import Inspection
 
 
 
-
 class PermitForm(forms.ModelForm):
     building_type = forms.CharField(required=True, max_length=6, widget=forms.Select(choices=Permit.BUILDING_TYPE_CHOICES))
     permittee_type = forms.CharField(required=True, max_length=2, widget=forms.Select(choices=Permit.PERMITTEE_TYPE_CHOICES))
@@ -75,3 +74,11 @@ class TechnicianForm(forms.ModelForm):
             'fullname': forms.TextInput(attrs={'class':'form-control'}),
             'address': forms.TextInput(attrs={'class':'form-control'}),
             'phone': forms.TextInput(attrs={'class':'form-control'})}
+
+
+class ApprovalForm(forms.ModelForm):
+    class Meta:
+        model = Technician
+        fields = ('approved','user')
+        widgets ={
+            'approved': forms.TextInput(attrs={'class':'form-control'})}

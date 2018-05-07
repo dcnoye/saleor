@@ -9,8 +9,11 @@ urlpatterns = [
     url(r'^technicians/$', TechnicianList.as_view(), name='technicians'),
     url(r'^technicians/new/$', views.new_technician, name='new_technician'),
     url(r'^(?P<pk>[0-9]+)/delete/$', views.delete_technician, name='delete_technician'),
+    url(r'^link-to-fun$', views.change_db_value),
     url(r'^permit_form/$', views.permit_form, name="permit_form"),
+    url(r'^technicians/tech_form/(?P<tech_id>\d+)/$', views.tech_form, name="tech_form"),
     url(r'^permit_confirm/$', views.permit_confirm, name="permit_confirm"),
+    url(r'^technicians/tech_confirm/(?P<tech_id>\d+)/$', views.tech_confirm, name="tech_confirm"),
     url(r'^permits/$', PermitList.as_view(), name='permits'),
     url(r'^permit_pdf/(?P<id>\d+)/$', views.order_permit_pdf, name='order-permit-pdf')]
     

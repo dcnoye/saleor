@@ -31,7 +31,6 @@ class Technician(models.Model):
 """	def __unicode__(self)
 		return u"%s's Technician Info" %self.user_id"""
 		
-		
     		
 class Permit(models.Model):
 #    building_type = models.CharField(max_length=100) # (1_2_family_townhouse, mobile_manu, res_3_multifam, commercial)
@@ -105,8 +104,6 @@ class Permit(models.Model):
 
     #class Meta:
      #   verbose_name_plural = 'permits'
-	
-			
 	
 class Inspection(models.Model):
 	test = models.CharField(max_length=200)
