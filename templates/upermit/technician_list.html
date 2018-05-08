@@ -33,7 +33,7 @@ Technician List
       <table border=1>
         <tr><td>Full name</td><td>Date added</td><td>Photo</td>
           {% if perms.account.edit_staff %}
-            <td>Approved</td><td>Tech ID#</td><td>User ID</td><td>Account</td><td>Edit Approval</td>
+            <td>Approved</td><td>Tech ID#</td><td>User ID</td><td>Account</td><td>Delete</td>
           {% endif %}
         </tr>
         {% for line in technicians %}
@@ -46,11 +46,11 @@ Technician List
           <td></td>
           {% endif %}
           {% if perms.account.edit_staff %}
-          <td>{{ line.approved }}</td>
+          <td><a href="tech_form/{{ line.id }}/">{{ line.approved }}</a></td>
           <td>{{ line.id }}</td>
           <td>{{ line.user_id }}</td>
           <td>{{ line.user }}</td>
-          <td><a href="tech_form/{{ line.id }}/">Edit</a></td>
+          <td><a href="delete/{{ line.id }}/">X</a></td>
           {% endif %}
         </tr>
                 

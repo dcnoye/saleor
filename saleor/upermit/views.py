@@ -125,31 +125,13 @@ def new_technician(request):
 
 @staff_member_required
 @permission_required('account.edit_staff')
-def delete_technician(request, pk):
-    queryset = Technician.objects.prefetch_related('lines')
-    staff = get_object_or_404(queryset, pk=pk)
-    if request.method == 'POST':
-        staff.delete()
-        msg = pgettext_lazy(
-            'Dashboard message', 'Removed tech member %s') % (staff,)
-        messages.success(request, msg)
-        return redirect('upermit:technicians')
-    ctx = {'staff': staff, 'orders': staff.count()}
-    return TemplateResponse(
-        request, 'upermit/confirm_delete.html', ctx)
+def delete_technician(request, tech_id):
+    tech = Technician.objects.get(id = tech_id)
+    tech.delete()
+    return redirect('upermit:technicians')
 
-
-def change_db_value(request):
-    queryset = Technician.objects.prefetch_related('lines')
-    value = request.POST.get('value','')
-    staff = get_object_or_404(queryset, value)
-    # database operation
-    ctx = {'staff': staff, 'orders': staff.count()}
-    return TemplateResponse(
-        request, 'upermit/template.html', ctx)
 
 def tech_form(request, tech_id):
-
     tech = Technician.objects.get(id = tech_id)
     if tech.approved == 0:
         tech.approved = 1
@@ -159,26 +141,6 @@ def tech_form(request, tech_id):
         tech.approved = 0
         tech.save()
         return redirect('upermit:technicians')
-
-def tech_confirm(request):
-    if not request.user.is_authenticated:
-        response = HttpResponse("")
-        return response
-
-    if request.POST:
-        t_form = ApprovalForm(request.POST)
-
-        if t_form.is_valid():
-
-            tech = Technician.objects.filter(id=request.user_id)
-            t_form = ApprovalForm(request.POST, instance = tech)
-            t_form.save()
-            return redirect('upermit:technicians')
-    else:
-        tech = Technician.objects.filter(id=request.user_id)
-        t_form = ApprovalForm(request.POST, instance = tech)
-
-        return TemplateResponse(request, 'upermit/tech_form.html', {'form': form })
 
 
 def permit_form(request):
