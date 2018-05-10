@@ -28,6 +28,9 @@ from .forms import InspectionForm
 from .forms import ApprovalForm
 
 import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 def staff_member_required(f):
     return _staff_member_required(f, login_url='account:login')
@@ -74,20 +77,20 @@ def index(request):
     
 
 def technicians_list(request):
-	"""
-	technicians = Technician.objects.prefetch_related(
-		'user')
-		
-	technicians = technicians.select_related(
-		'user')
-	
-	tech = get_object_or_404(technicians)
-	"""
-	
-	tech = Technician.objects.prefetch_related('lines');
-	
-	ctx = {'technician': tech}
-	return TemplateResponse(request, 'upermit/technician_list.html', ctx)
+    """
+    technicians = Technician.objects.prefetch_related(
+        'user')
+        
+    technicians = technicians.select_related(
+        'user')
+    
+    tech = get_object_or_404(technicians)
+    """
+    
+    tech = Technician.objects.prefetch_related('lines');
+    
+    ctx = {'technician': tech}
+    return TemplateResponse(request, 'upermit/technician_list.html', ctx)
 
 
 @staff_member_required
@@ -97,31 +100,31 @@ def styleguide(request):
 
 
 def new_technician(request):
-	
-	# Test to see if the user is anonymous or not - i.e. only allow registered users
-	# to touch this.
-	if not request.user.is_authenticated:
-		response = HttpResponse("")
-		return response
-	
-	#if request.method == 'POST' and request.FILES['certificate_photo']:
-		
-	if request.method == 'POST':
-		current_user = request.user
-		
-		
-		form = TechnicianForm(request.POST, request.FILES)
-		if form.is_valid():
-			obj = form.save(commit=False)
-			obj.user_id = current_user.id
-			form.save()
+    
+    # Test to see if the user is anonymous or not - i.e. only allow registered users
+    # to touch this.
+    if not request.user.is_authenticated:
+        response = HttpResponse("")
+        return response
+    
+    #if request.method == 'POST' and request.FILES['certificate_photo']:
+        
+    if request.method == 'POST':
+        current_user = request.user
+        
+        
+        form = TechnicianForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user_id = current_user.id
+            form.save()
 
-			tech = Technician.objects.prefetch_related('lines');
-			return TemplateResponse(request, 'upermit/technician_list.html', {'technician': tech})
-	else:
-		form = TechnicianForm()
-		
-	return TemplateResponse(request, 'upermit/new_technician.html', {'form': form })
+            tech = Technician.objects.prefetch_related('lines');
+            return TemplateResponse(request, 'upermit/technician_list.html', {'technician': tech})
+    else:
+        form = TechnicianForm()
+        
+    return TemplateResponse(request, 'upermit/new_technician.html', {'form': form })
 
 @staff_member_required
 @permission_required('account.edit_staff')
@@ -143,7 +146,7 @@ def tech_form(request, tech_id):
         return redirect('upermit:technicians')
 
 
-def permit_form(request):
+def permit_form(request, id):
     #permit = Permit.objects.prefetch_related('lines');
     
     # Test to see if the user is anonymous or not - i.e. only allow registered users
@@ -178,7 +181,7 @@ def permit_form(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = PermitForm()
-	
+    
     return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
     
 def permit_confirm(request):
@@ -204,33 +207,58 @@ def permit_confirm(request):
         else:
             return TemplateResponse(request, 'upermit/technician_list.html')
 
+def permit_edit(request,p_id):
+    if not request.user.is_authenticated:
+        response = HttpResponse("")
+        return response
+
+    if request.method == 'POST':
+
+        current_user = request.user
+        # create a form instance and populate it with data from the request:
+        form = PermitForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            retstr=""
+            for attr in dir(form):
+                if hasattr( form, attr ):
+                    retstr = retstr + str((attr, getattr(form, attr)))
+            response = HttpResponse(retstr)
+            return response
+
+            return TemplateResponse(request, 'upermit/permit_confirm.html', {'form': form})
+        else:
+            return TemplateResponse(request, 'upermit/technician_list.html')
+
+
 class TechnicianList(ListView):
-	model = Technician
-	template_name = 'upermit/technician_list.html'
-	context_object_name = 'technicians'
-	
-	def get_queryset(self):
-		tech_list = Technician.objects.filter(user=self.request.user)
-		return tech_list
-		
-	@method_decorator(login_required)
-	def dispatch(self, *args, **kwargs):
-		return super(TechnicianList, self).dispatch(*args, **kwargs)		
-	
+    model = Technician
+    template_name = 'upermit/technician_list.html'
+    context_object_name = 'technicians'
+    
+    def get_queryset(self):
+        tech_list = Technician.objects.filter(user=self.request.user)
+        return tech_list
+        
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TechnicianList, self).dispatch(*args, **kwargs)        
+    
 
 class PermitList(ListView):
-	model = Permit
-	template_name = 'upermit/index.html'
-	context_object_name = 'permits'
-	
-#	def get_queryset(self):
-#		permit_list = Permit.objects.filter(user=self.request.user)
-#		return permit_list
-		
-	@method_decorator(login_required)
-	def dispatch(self, *args, **kwargs):
-		return super(PermitList, self).dispatch(*args, **kwargs)		
-	
+    model = Permit
+    template_name = 'upermit/index.html'
+    context_object_name = 'permits'
+    
+#   def get_queryset(self):
+#       permit_list = Permit.objects.filter(user=self.request.user)
+#       return permit_list
+    logger.debug("PERMIT LIST PERMIT LIST PERMIT LIST PERMIT LIST PERMIT LIST PERMIT LIST PERMIT LIST PERMIT LIST PERMIT LIST PERMIT LIST ")
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PermitList, self).dispatch(*args, **kwargs)        
+    
 #@staff_member_required
 #@permission_required('order.edit_order')
 def order_permit_pdf(request, id):
@@ -452,6 +480,10 @@ def order_permit_pdf(request, id):
     # Declared Value
     if (permit.declared_value):
         can.drawString(504, 303, permit.declared_value)
+
+    # Line 1
+    if (permit.project_line_1):
+        can.drawString(23, 288, permit.project_line_1)
 
     # Line 2
     if (permit.project_line_2):

@@ -88,6 +88,7 @@ class Permit(models.Model):
     related_hurricane_irma = models.BooleanField() 
     project_name = models.CharField(max_length=100) 
     declared_value = models.CharField(max_length=100) 
+    project_line_1 = models.CharField(max_length=100) 
     project_line_2 = models.CharField(max_length=100) 
     project_line_3 = models.CharField(max_length=100) 
     project_line_4 = models.CharField(max_length=100) 

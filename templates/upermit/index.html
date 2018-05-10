@@ -32,14 +32,21 @@ Past Order List
   <div id="content-container" class="container p-none">
     <ul id="al-group" class="strip-list">
       <table border=1>
-        <tr><td>Order date</td><td>Parcel</td><td>Street Address 1</td><td>Street Address 2</td><td>Actions</td></tr>
+        <tr><td>Order date</td><td>Parcel</td><td>Street Address 1</td><td>Street Address 2</td><td>Actions</td>
+          {% if perms.account.edit_staff %}
+          <td>PDF's</td>
+          {% endif %} 
+        </tr>
         {% for line in permits %}
         <tr>
           <td>{{ line.when_created }}</td>
           <td>{{ line.parcel }}</td>
           <td>{{ line.job_street_address_1 }}</td>
           <td>{{ line.job_street_address_2 }}</td>
-          <td><a href="permit_form?id={{ line.id }}">Complete permit form</a></td>
+          <td><a href="permit_form/{{ line.id }}/">Complete form</a></td>
+          {% if perms.account.edit_staff %}
+          <td><a href="permit_pdf/{{ line.id }}/">download</a></td>
+          {% endif %} 
         </tr>
         
         {% endfor %}

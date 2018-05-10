@@ -36,12 +36,12 @@ Technician List
             <td>Approved</td><td>Tech ID#</td><td>User ID</td><td>Account</td><td>Delete</td>
           {% endif %}
         </tr>
-        {% for line in technicians %}
+        {% for line in technicians|dictsort:"fullname" %}
         <tr>
           <td>{{ line.fullname }}</td>
           <td>{{ line.datetime_created }}</td>
           {% if line.certificate_photo %}
-          <td><img width="50" height="50" src="{{ MEDIA_URL }}{{ line.certificate_photo }}" ></img></td>
+          <td><a href="{{ MEDIA_URL }}{{ line.certificate_photo }}"><img width="50" height="50" src="{{ MEDIA_URL }}{{ line.certificate_photo }}" ></img></a></td>
           {% else %}
           <td></td>
           {% endif %}

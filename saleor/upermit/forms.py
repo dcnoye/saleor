@@ -36,6 +36,7 @@ class PermitForm(forms.ModelForm):
     
     project_name = forms.CharField(required=True, max_length=100)
     declared_value = forms.CharField(required=False, max_length=100)
+    project_line_1 = forms.CharField(required=False, max_length=100)
     project_line_2 = forms.CharField(required=False, max_length=100)
     project_line_3 = forms.CharField(required=False, max_length=100)
     project_line_4 = forms.CharField(required=False, max_length=100)
@@ -49,7 +50,7 @@ class PermitForm(forms.ModelForm):
 			'owner_name','owner_phone','subdivision',
 			'lot_block_unit','sdp_pl','pl_filename_line1',
 			'pl_filename_line2','subcontractors','related_hurricane_irma',
-			'project_name','declared_value','project_line_2','project_line_3',
+			'project_name','declared_value','project_line_1','project_line_2','project_line_3',
 			'project_line_4','project_line_5']
         
         
