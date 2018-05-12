@@ -64,7 +64,14 @@ class PermitForm(forms.ModelForm):
     
     
 class InspectionForm(forms.ModelForm):
-    inspect_address = forms.CharField(max_length=100)
+    job_street_address_1 = forms.CharField(required=True, max_length=100)
+    job_street_address_2 = forms.CharField(required=False, max_length=100)
+    owner_name = forms.CharField(required=True, max_length=100)
+    owner_phone = forms.CharField(required=True, max_length=100)
+    
+    class Meta:
+        model = Inspection
+        fields = ('job_street_address_1', 'job_street_address_2', 'owner_name', 'owner_phone')
     
     
 class TechnicianForm(forms.ModelForm):

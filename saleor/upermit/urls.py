@@ -12,7 +12,8 @@ urlpatterns = [
     url(r'^technicians/delete/(?P<tech_id>\d+)/$', views.delete_technician, name="tech_form"),
     url(r'^technicians/tech_form/(?P<tech_id>\d+)/$', views.tech_form, name="tech_form"),
     url(r'^permits/$', PermitList.as_view(), name='permits'),
-    url(r'^permit_pdf/(?P<id>\d+)/$', views.order_permit_pdf, name='order-permit-pdf')]
+    url(r'^permit_pdf/(?P<id>\d+)/$', views.order_permit_pdf, name='order-permit-pdf'),
+    url(r'^inspection_form/(?P<id>\d+)/$', views.inspection_form, name="inspection_form")]
     
 #    url(r'^technicians-old/', views.technicians_list, name='technicians')]
 #    url(r'^shipping-address/', views.shipping_address_view,

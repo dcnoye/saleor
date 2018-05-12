@@ -107,4 +107,7 @@ class Permit(models.Model):
      #   verbose_name_plural = 'permits'
 	
 class Inspection(models.Model):
-	test = models.CharField(max_length=200)
+	job_street_address_1 = models.CharField(max_length=100) 
+	job_street_address_2 = models.CharField(max_length=100) 
+	owner_name = models.CharField(max_length=100) 
+	owner_phone = models.CharField(max_length=100) 

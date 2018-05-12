@@ -184,6 +184,43 @@ def permit_form(request, id):
     
     return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
     
+    
+def inspection_form(request, id):
+    #permit = Permit.objects.prefetch_related('lines');
+    
+    # Test to see if the user is anonymous or not - i.e. only allow registered users
+    # to touch this.
+    if not request.user.is_authenticated:
+        response = HttpResponse("")
+        return response
+
+        
+    if request.method == 'POST':
+        
+        current_user = request.user
+        # create a form instance and populate it with data from the request:
+        #form = PermitForm(request.POST)
+        # check whether it's valid:
+        #if form.is_valid():
+        #    obj = form.save(commit=False)
+        #    obj.user_id = current_user.id
+        #    obj.order_id = 11
+        """
+        retstr=""
+        for attr in dir(obj.order_id):
+            if hasattr( obj.order_id, attr ):
+                retstr = retstr + str((attr, getattr(obj.order_id, attr)))
+        response = HttpResponse(retstr)
+        return response
+        """
+        #    obj.save()
+        #    return TemplateResponse(request, 'upermit/index.html')
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = InspectionForm()
+    
+    return TemplateResponse(request, 'upermit/inspection_form.html', {'form': form })    
+        
 def permit_confirm(request):
     if not request.user.is_authenticated:
         response = HttpResponse("")
