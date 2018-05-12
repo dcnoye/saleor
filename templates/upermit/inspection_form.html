@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap_form from bootstrap4 %}
+
+{% block title %}
+Redeem Permit
+{% endblock %}
+
+
+{% block content %}
+	<div id="content-container" class="container p-none">
+		<div>Form Errors: {{ form.errors }}  Form Non Field Errors: {{ form.non_field_errors }}</div>
+		<div class="side-p">
+			<form id="new_permit" action="." method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				
+				<h2><b>General Permit Information</b></h2>
+				
+				<table class="table">
+					<tbody>
+
+						<tr>
+							<td>Job Street Address Line 1</td>
+							<td>{{ form.job_street_address_1 }}</td>
+							<td style="color:red;">Required</td>
+						</tr>
+						
+						<tr>
+							<td>Job Street Address Line 2</td>
+							<td>{{ form.job_street_address_2 }}</td>
+							<td style="color:blue;">Optional</td>
+						</tr>
+						
+						<tr>
+							<td>Owner Name</td>
+							<td>{{ form.owner_name }}</td>
+							<td style="color:red;">Required</td>
+						</tr>
+
+						<tr>
+							<td>Owner Phone Number</td>
+							<td>{{ form.owner_phone }}</td>
+							<td style="color:red;">Required</td>
+						</tr>
+
+					</tbody>
+				</table>
+						
+-->						
+
+					</tbody>
+				</table>
+
+				<h2><b>Please review the above information</b></h2>
+
+<!--				
+				<table class="table">
+					<tbody>
+								
+						<tr>
+							<td width="40%">Your initials</td>
+							<td width="20%">{{ form.project_line_5 }}</td>
+							<td style="color:red;">Required</td>
+						</tr>
+					</tbody>
+				</table>
+-->								
+                                <button type="submit" class="btn">{% trans "Submit" %}</button>
+			</form>
+
+<!--
+			The below code was to allow the person to first upload a picture, then fill out the form.
+			However, this takes more time to do than just having the person do all at once. Later on
+			can go back and add a picture "preview". 
+			
+			<br><br>
+			<form id="new_tech_pic" action="." method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<table class="table">
+					<tbody>
+						<tr>
+							<th>{{ form.certificate_photo.label }}</th>
+						</tr>
+						<tr>
+							<td>{{ form.certificate_photo }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit">Save</button>
+			</form>
+
+
+			{% if uploaded_file_url %}
+				<p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+			{% endif %}
+-->
+			<br><br>
+			<p><a href="{% url 'home' %}">Return to home</a></p>			
+			
+		</div>
+	</div>
+	
+
+{% endblock content %}
