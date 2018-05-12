@@ -120,7 +120,8 @@ def new_technician(request):
             form.save()
 
             tech = Technician.objects.prefetch_related('lines');
-            return TemplateResponse(request, 'upermit/technician_list.html', {'technician': tech})
+            #return TemplateResponse(request, 'upermit/technician_list.html', {'technician': tech})
+            return redirect('upermit:technicians')
     else:
         form = TechnicianForm()
         
