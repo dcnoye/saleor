@@ -9,7 +9,8 @@ from .summary import (
     summary_without_shipping)
 from .validators import (
     validate_cart, validate_shipping_address,
-    validate_shipping_method, validate_is_shipping_required)
+    validate_shipping_method, validate_is_shipping_required,
+    validate_approved_tech)
 from ..core import load_checkout
 from ..forms import ShippingMethodForm
 from ...account.forms import LoginForm
@@ -63,6 +64,7 @@ def shipping_method_view(request, checkout):
 @validate_voucher
 @validate_cart
 @add_voucher_form
+@validate_approved_tech
 def summary_view(request, checkout):
     """Display the correct order summary."""
     if checkout.is_shipping_required:

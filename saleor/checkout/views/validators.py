@@ -2,6 +2,7 @@ from functools import wraps
 
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
+from saleor.upermit.models import Technician
 
 
 def validate_cart(view):
@@ -68,5 +69,23 @@ def validate_is_shipping_required(view):
     def func(request, checkout):
         if not checkout.is_shipping_required:
             return redirect('checkout:summary')
+        return view(request, checkout)
+    return func
+
+
+def validate_approved_tech(view):
+    """Decorate a view making it check if Client has Approved Technician.
+
+    Expects to be decorated with `@validate_cart`.
+
+    If Technician is Approved redirects to the checkout summary.
+    """
+    @wraps(view)
+    def func(request, checkout):
+        current_user = request.user
+        tech_obj = Technician.objects.filter(user_id = current_user.id)
+        tech_obj = tech_obj.filter(approved="1")
+        if not tech_obj:
+            return redirect('upermit:technicians')
         return view(request, checkout)
     return func

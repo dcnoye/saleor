@@ -1,3 +1,5 @@
+from django.forms import modelformset_factory
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 from django.contrib.admin.views.decorators import (
@@ -149,42 +151,26 @@ def tech_form(request, tech_id):
 
 def permit_form(request, id):
     #permit = Permit.objects.prefetch_related('lines');
-    
-    # Test to see if the user is anonymous or not - i.e. only allow registered users
-    # to touch this.
-    if not request.user.is_authenticated:
-        response = HttpResponse("")
-        return response
-
+    permitx = Permit.objects.get(id = id) 
         
     if request.method == 'POST':
         
+        form = PermitForm(request.POST)
         current_user = request.user
         # create a form instance and populate it with data from the request:
-        form = PermitForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user_id = current_user.id
-            obj.order_id = 11
-            
-            """
-            retstr=""
-            for attr in dir(obj.order_id):
-                if hasattr( obj.order_id, attr ):
-                    retstr = retstr + str((attr, getattr(obj.order_id, attr)))
-            response = HttpResponse(retstr)
-            return response
-            """
-            
+            obj.order_id = id
             obj.save()
             return TemplateResponse(request, 'upermit/index.html')
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = PermitForm()
+        form = PermitForm(instance=permitx)
     
-    return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })    
-    
+    return TemplateResponse(request, 'upermit/permit_form.html', {'form': form })   
+
     
 def inspection_form(request, id):
     #permit = Permit.objects.prefetch_related('lines');
