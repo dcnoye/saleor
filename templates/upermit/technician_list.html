@@ -37,6 +37,7 @@ Technician List
           {% endif %}
         </tr>
         {% for line in technicians|dictsort:"fullname" %}
+        {% if user.id == line.user_id %}
         <tr>
           <td>{{ line.fullname }}</td>
           <td>{{ line.datetime_created }}</td>
@@ -51,6 +52,7 @@ Technician List
           <td>{{ line.user_id }}</td>
           <td>{{ line.user }}</td>
           <td><a href="delete/{{ line.id }}/">X</a></td>
+          {% endif %}
           {% endif %}
         </tr>
                 
