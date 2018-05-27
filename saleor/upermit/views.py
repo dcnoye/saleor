@@ -261,7 +261,8 @@ class TechnicianList(ListView):
     context_object_name = 'technicians'
     
     def get_queryset(self):
-        tech_list = Technician.objects.filter(user=self.request.user)
+        #tech_list = Technician.objects.filter(user=self.request.user)
+        tech_list = list(Technician.objects.all())
         return tech_list
         
     @method_decorator(login_required)
