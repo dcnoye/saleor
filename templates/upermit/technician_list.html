@@ -37,7 +37,7 @@ Technician List
           {% endif %}
         </tr>
         {% for line in technicians|dictsort:"fullname" %}
-        {% if user.id == line.user_id %}
+        {% if user.id == line.user_id or user.is_superuser %}
         <tr>
           <td>{{ line.fullname }}</td>
           <td>{{ line.datetime_created }}</td>
